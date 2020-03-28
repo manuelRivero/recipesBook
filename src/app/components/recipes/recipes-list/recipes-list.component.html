@@ -1,21 +1,26 @@
-<div class="row">
-    <div class="col-md-12">
-        <button class="btn btn-success">New recipe</button>
-    </div>
+<div class="row shadow pt-3 pb-3">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-12">
+          <button class="btn btn-success" (click)="onNewRecipe()">New recipe</button>
+      </div>
+  </div>
+
+  <hr>
+  <div class="row">
+      <div class="col-12 ">
+          <div class="list-group" *ngIf="recipes; else spinner">
+              <app-recipe-item *ngFor="let recipe of recipes; let i = index" [recipe]="recipe"></app-recipe-item>
+          </div>
+      </div>
+  </div>
+
+  </div>
 </div>
-<div class="row">
-    <div class="col-sm-12 ">
-        <div class="list-group">
-            <a href="#" class="list-group-item d-flex justify-content-between" *ngFor="let recipe of recipes">
-                <div class="">
-                    <h4>{{recipe.name}}</h4>
-                    <p>{{recipe.description}}</p>
-                </div>
-                <div class="">
-                    <img [src]="recipe.imgpath" [alt]="recipe.name" class="img-fluid" style="max-height: 50px">
-                </div>
-            </a>
-        </div> 
+<ng-template #spinner>
+  <div class="row justify-content-center align-content-center" style="height: 100px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-</div>
-<app-recipe-item></app-recipe-item>
+  </div>
+</ng-template>

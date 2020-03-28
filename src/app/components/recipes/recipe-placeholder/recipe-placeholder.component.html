@@ -1,0 +1,25 @@
+<div class="row justify-content-center mt-5 mt-md-0">
+  <div class="col-12">
+    <ng-container *ngIf="_recipeService.alerta$ | async as alert ">
+      <div
+        [class]="'alert alert-dismissible fade show' +' ' + alert.type"
+        role="alert"
+      >
+        {{ alert.message }}
+        <a [routerLink]="[alert.url]" *ngIf="alert.hasLink">new recipes</a>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<!--
+<ng-template #message>
+
+</ng-template> -->

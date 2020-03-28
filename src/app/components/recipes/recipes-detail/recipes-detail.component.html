@@ -1,1 +1,97 @@
-<p>recipes-detail works!</p>
+<div class="row shadow pt-3 pb-3" *ngIf="recipe; else loading">
+  <div class="col-12 mb-3">
+    <div class="dropdown">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Dropdown button
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" (click)="onAddToShoppingList()" role="button"
+          >To Shopping List</a
+        >
+        <a class="dropdown-item" (click)="onEditRecipe()">Edit Recipe</a>
+        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+          >Delete Recipe</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <img [src]="recipe.imgpath" alt="" class="img-fluid" />
+
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.name }}</h5>
+        <p class="card-text">{{ recipe.description }}</p>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item"
+          *ngFor="let ingredient of recipe.ingredients"
+        >
+          {{ ingredient.name }} : {{ ingredient.amount }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div
+    class="row justify-content-center align-content-center"
+    style="height: 100px;"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deleting</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure ? this can`t be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="onDeleteRecipe()"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

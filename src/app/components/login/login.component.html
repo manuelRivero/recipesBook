@@ -1,0 +1,51 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-12 col-md-6">
+    <div class="rounded shadow p-3">
+      <h1>{{signUp? "Sing Up": "Log In"}}</h1>
+      <hr>
+      <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" ngModel required>
+        </div>
+        <div class="form-group">
+          <label for="email">password</label>
+          <input type="password" class="form-control" id="password" name="password" ngModel required minlength="6">
+        </div>
+        <div class="form-group">
+          <button type="button" (click)="modetoogle()" class="btn btn-link">
+            {{signUp? "Alredy have an accout? ": "Sing Up"}}
+          </button>
+        </div>
+        <div class="form-group text-center">
+          <button class="btn btn-success" type="submit" [disabled]="!loginForm.valid || isLoading">
+            <div class="spinner-border" role="status" *ngIf="isLoading; else buttonText">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <ng-template #buttonText>
+              {{signUp? "Sing Up": "Log In"}}
+            </ng-template>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-12 col-md-6">
+    <div class="alert alert-success" role="alert" *ngIf="successAlert">
+      Success, redirecting to home page!
+      <div class="spinner-border spinner-border-sm" role="status" >
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div class="alert alert-warning" role="alert" *ngIf="errorAlert">
+      {{errorAlert}}
+      Do you want to
+      <button type="button" (click)="modetoogle()" class="btn btn-link">
+        {{signUp? "Alredy have an accout? ": "Sing Up"}}
+      </button>
+    </div>
+  </div>
+</div>

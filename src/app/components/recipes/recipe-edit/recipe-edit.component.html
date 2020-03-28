@@ -1,0 +1,63 @@
+<div class="row shadow pt-3 pb-3" *ngIf="edit && recipe || !edit; else loading">
+  <div class="col-12" >
+    <form (ngSubmit)="onSubmit()" [formGroup]="editForm">
+      <div class="row">
+        <div class="col-12 form-group">
+        <button type="submit" [disabled]="!editForm.valid" class="btn btn-success mr-2">Save</button>
+        <button type="button" class="btn btn-danger mr-2" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 form-group">
+          <label for="name">Name</label>
+          <input formControlName="name" id="name" type="text" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 form-group">
+          <label for="imgUrl">Img Url</label>
+          <input formControlName="imgUrl" id="imgUrl" type="text" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 form-group">
+          <img [src]="editForm.get('imgUrl').value" alt="" class="img-thumbnail">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 form-group">
+          <label for="description">Description</label>
+          <textarea formControlName="description" id="description" cols="6" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-12" formArrayName="ingredients">
+          <div class="row form-group" *ngFor="let ingredient of editForm.get('ingredients')['controls']; let i = index" [formGroupName]="i">
+            <div class="col-7" >
+              <input type="text" class="form-control" formControlName="name" >
+            </div>
+            <div class="col-3">
+              <input type="number" class="form-control" formControlName="amount" >
+            </div>
+            <div class="col-1">
+              <button type="button" class="btn btn-danger" (click)="onDeleteIngredient(i)">X</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 form-group">
+            <button type="button" class="btn btn-success" (click)="onNewIngredient()">new Ingredient</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+<ng-template #loading>
+    <div class="row justify-content-center align-content-center" style="height: 100px;">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>  </ng-template>

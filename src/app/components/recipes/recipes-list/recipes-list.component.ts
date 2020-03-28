@@ -1,18 +1,32 @@
-import { Recipe } from './../recipes.model';
-import { Component, OnInit } from '@angular/core';
+import { RecipeService } from "./../../../services/recipe.service";
+import { Recipe } from "../../shared/recipes.model/recipes.model";
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-recipes-list',
-  templateUrl: './recipes-list.component.html',
+  selector: "app-recipes-list",
+  templateUrl: "./recipes-list.component.html",
   styles: []
 })
-export class RecipesListComponent implements OnInit {
-  recipes:Recipe[]=[
-    new Recipe('arroz con mariscos', 'un delicioso arroz con cosas marinas', 'https://recetasdepanama.com/wp-content/uploads/2019/03/Arroz-con-mariscos-1024x680.jpg')
-  ];
-  constructor() { }
+export class RecipesListComponent implements OnInit{
+  recipes: Recipe[];
 
-  ngOnInit() {
+  onNewRecipe() {
+    this.router.navigate(["new"], { relativeTo: this.route });
   }
 
+  constructor(
+    public _recipeService: RecipeService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+
+    this.route.url.subscribe(res => {
+      this._recipeService.getRecipes().subscribe( (NewRecipeList:Recipe[])=>{
+        this.recipes = NewRecipeList;
+      }, err => console.log(err.status))
+    })
+  }
 }
