@@ -22,7 +22,8 @@ import { DropdownDirective } from './components/shared/directives/dropdown.direc
 import {ShopingListService} from './services/shoping-list.service';
 import { RecipePlaceholderComponent } from './components/recipes/recipe-placeholder/recipe-placeholder.component';
 import { RecipeEditComponent } from './components/recipes/recipe-edit/recipe-edit.component';
-import { LoginComponent } from './components/login/login.component'
+import { LoginComponent } from './components/login/login.component';
+import { StepComponent } from './components/ui/step/step.component'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { LoginComponent } from './components/login/login.component'
     DropdownDirective,
     RecipePlaceholderComponent,
     RecipeEditComponent,
-    LoginComponent
+    LoginComponent,
+    StepComponent
   ],
   imports: [
     BrowserModule,

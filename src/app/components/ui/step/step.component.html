@@ -1,0 +1,7 @@
+
+    <ul class="step-container">
+      <ng-container *ngFor="let step of steps; let i = index">
+        <li [ngClass]="{'active': activeStep === i, 'success':activeStep > i}">{{step}}</li>
+      </ng-container>
+    </ul>
+
