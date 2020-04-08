@@ -7,8 +7,9 @@
     <app-step [steps]="steps" [activeStep]="activeStep"></app-step>
   </div>
 
+
   <!-- steps controller-->
-  <div class="col-12 form-group d-flex justify-content-between mt-3 mb-3">
+  <div class="col-12 form-group d-flex mt-3 mb-3 justify-content-start" [ngClass]=" activeStep > 0 ? 'justify-content-between':'justify-content-end'">
     <button
       type="button"
       class="btn btn-primary mr-2"
@@ -21,7 +22,7 @@
       type="button"
       class="btn btn-primary mr-2"
       (click)="onNextStep()"
-      [disabled]="readOnly"
+      [disabled]="!editForm.get('step'+ activeStep).valid"
       *ngIf="!readOnly"
     >
       Next
@@ -77,7 +78,7 @@
         </div>
         <div class="col-12 form-group">
           <img
-            [src]="editForm.get('step0').get('imgUrl').value"
+            [src]="editForm.get('step0').get('imgUrl').value || 'assets/images/img-placeholder.jpg'"
             alt=""
             class="img-thumbnail"
           />
@@ -117,7 +118,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 form-group text-center">
+        <div class="col-12 form-group text-center" *ngIf="!readOnly">
           <button
             type="button"
             class="btn btn-primary"
@@ -164,3 +165,5 @@
     </div>
   </div>
 </ng-template>
+
+{{editForm.get('step'+0).valid}}
