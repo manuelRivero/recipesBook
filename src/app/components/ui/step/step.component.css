@@ -11,8 +11,10 @@
 }
 
 .step-container li{
-flex: 1 0 auto;
+flex: 1 1 0px;
 text-align: center;
+position: relative;
+margin-right:.5rem;
 }
 
 .step-container li::before{
@@ -26,37 +28,70 @@ text-align: center;
   height: 35px;
   line-height: 30px;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 3px solid #ddd;
   border-radius: 50%;
   display: block;
+  transition:all .3s;
 
 }
-.step-container li::after{
-  content:"";
-  width: 100%;
-  height: 1px;
+.step-container li.active::before{
+  border: 3px solid green;
+
+  transition-delay: .5s;
+
+}
+.step-container li span{
+  width: 130%;
+  height: 3px;
   background-color: #ddd ;
   position: absolute;
-  top: 35px;
-  left: -20%;
+  top: 30%;
+  left: 0;
+  transform: translateX(-50%);
   z-index: -1;
-}
-.step-container li:first-child:after{
-  content: none;
+ }
+
+ .step-container li span::after{
+  content:"";
+  position: absolute;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: green ;
+  transform: scaleX(0);
+  transition: all 1s;
+  transform-origin: left;
 }
 
 .step-container li.active{
   color:green;
 }
-.step-container li.active:before{
-  border:1px solid green
-}
-.step-container li.active + li::after{
-  background-color: green;
+
+.step-container li.active span::after{
+  background-color:green;
+  transform: scaleX(1);
 }
 
+.step-container li.success{
+color:green;
+}
 .step-container li.success:before{
   color:#fff;
-  border: 1px solid green;
+  border: 3px solid green;
   background-color: green;
+  animation: growUp .5s ease-out 1;
+}
+.step-container li.success span::after{
+  background-color: green;
+  transform: scaleX(1);
+}
+
+@keyframes growUp {
+  70%{
+    transform: scale(1.3);
+  }
+  to{
+    transform: scale(1);
+  }
 }
