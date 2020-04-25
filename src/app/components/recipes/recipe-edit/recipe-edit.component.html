@@ -1,15 +1,16 @@
-<div
-  class="row shadow pt-3 pb-3"
-  *ngIf="(edit && recipe) || !edit; else loading"
->
+<div class="row shadow pt-3 pb-3">
   <!-- steps -->
   <div class="col-12">
     <app-step [steps]="steps" [activeStep]="activeStep"></app-step>
   </div>
 
-
   <!-- steps controller-->
-  <div class="col-12 form-group d-flex mt-3 mb-3 justify-content-start" [ngClass]=" activeStep > 0 ? 'justify-content-between':'justify-content-end'">
+  <div
+    class="col-12 form-group d-flex mt-3 mb-3 justify-content-start"
+    [ngClass]="
+      activeStep > 0 ? 'justify-content-between' : 'justify-content-end'
+    "
+  >
     <button
       type="button"
       class="btn btn-primary mr-2"
@@ -22,7 +23,7 @@
       type="button"
       class="btn btn-primary mr-2"
       (click)="onNextStep()"
-      [disabled]="!editForm.get('step'+ activeStep).valid"
+      [disabled]="!editForm.get('step' + activeStep).valid"
       *ngIf="!readOnly"
     >
       Next
@@ -30,36 +31,27 @@
   </div>
 
   <!-- Form -->
-  <div class="col-12">
-    <form (ngSubmit)="onSubmit()" [formGroup]="editForm">
-      <div class="row">
-        <div class="col-12 form-group" *ngIf="activeStep >= steps.length - 1">
-          <button
-            type="submit"
-            [disabled]="!editForm.valid"
-            class="btn btn-success mr-2"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger mr-2"
-            (click)="onCancel()"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
+  <div class="col-12" *ngIf="!loading; else spinner">
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="editForm"
+      class="overflow-hidden p-3"
+    >
       <!-- firts step -->
       <div
-        class="row"
+        class="row border p-2 mb-2"
+        [ngClass]="directionright ? 'slideIn' : 'slideOut'"
         *ngIf="activeStep === 0 || readOnly"
         [formGroup]="editForm.get('step0')"
       >
+        <div class="col-12 mb-3">
+          <h5>Basic information</h5>
+        </div>
+
         <div class="col-12 form-group">
           <label for="name">Name</label>
           <input
-          [readonly]="readOnly"
+            [readonly]="readOnly"
             formControlName="name"
             id="name"
             type="text"
@@ -67,26 +59,47 @@
           />
         </div>
         <div class="col-12 form-group">
-          <label for="imgUrl">Img Url</label>
+          <label for="description">Description</label>
           <input
-          [readonly]="readOnly"
-            formControlName="imgUrl"
-            id="imgUrl"
+            [readonly]="readOnly"
+            formControlName="description"
+            id="description"
             type="text"
             class="form-control"
           />
         </div>
         <div class="col-12 form-group">
+          <label for="imagUrl">image URL</label>
+          <input
+            [readonly]="readOnly"
+            formControlName="imgUrl"
+            id="imagUrl"
+            type="text"
+            class="form-control"
+            (keyup)="getImg()"
+          />
+        </div>
+        <div class="col-12 form-group loader">
           <img
-            [src]="editForm.get('step0').get('imgUrl').value || 'assets/images/img-placeholder.jpg'"
+            [src]="activeImage"
             alt=""
             class="img-thumbnail"
+            (load)="imgLoad()"
+            (error)="onabort()"
           />
         </div>
       </div>
 
       <!-- second step -->
-      <div class="row" *ngIf="activeStep === 1 || readOnly">
+      <div
+        class="row border p-2 mb-2"
+        *ngIf="activeStep === 1 || readOnly"
+        [ngClass]="directionright ? 'slideIn' : 'slideOut'"
+      >
+        <div class="col-12 mb-3">
+          <h5>Ingredients</h5>
+        </div>
+
         <div class="col-12" formArrayName="step1">
           <div
             class="row form-group"
@@ -97,7 +110,12 @@
             [formGroupName]="i"
           >
             <div class="col-7">
-              <input type="text" [readonly]="readOnly" class="form-control" formControlName="name" />
+              <input
+                type="text"
+                [readonly]="readOnly"
+                class="form-control"
+                formControlName="name"
+              />
             </div>
             <div class="col-3">
               <input
@@ -130,40 +148,76 @@
       </div>
 
       <!--  third step -->
-      <ng-container *ngIf="activeStep === 2 || readOnly" formArrayName="step2">
+      <div
+        class="row border p-2 mb-2"
+        *ngIf="activeStep === 2 || readOnly"
+        [ngClass]="directionright ? 'slideIn' : 'slideOut'"
+        formArrayName="step2"
+      >
+      <h5>Instructions</h5>
         <div
-          class="row"
+          class="col-12"
           *ngFor="let steps of editForm.get('step2')['controls']; let i = index"
+          [ngClass]="directionright ? 'slideIn' : 'slideOut'"
         >
-          <div class="col-12 form-group" [formGroupName]="i">
-            <label for="description">Step # {{ i + 1 }}</label>
-            <textarea
-              [readOnly]="readOnly"
-              formControlName="step"
-              [id]="'step' + i"
-              cols="5"
-              class="form-control"
-            ></textarea>
+          <div class="form-group row" [formGroupName]="i">
+            <div class="col-10">
+              <label for="description">Step # {{ i + 1 }}</label>
+              <textarea
+                [readOnly]="readOnly"
+                formControlName="description"
+                [id]="'step' + i"
+                cols="5"
+                class="form-control col-10"
+              ></textarea>
+            </div>
+            <div class="col-2 align-self-center ">
+              <button
+                class="btn btn-danger"
+                type="button"
+                (click)="ondeleteIntruction(i)"
+              >
+                X
+              </button>
+            </div>
           </div>
         </div>
-        <div class="row " *ngIf="!readOnly">
-          <div class="col-12 form-group text-center">
-            <button type="button" class="btn btn-primary" (click)="onNewStep()">
-              New Step
-            </button>
-          </div>
+
+        <div class="col-12 form-group text-center " *ngIf="!readOnly">
+          <button type="button" class="btn btn-primary" (click)="onNewStep()">
+            New Step
+          </button>
         </div>
-      </ng-container>
-      <!-- /  third step -->
+      </div>
+
+      <!--  Submit Buttons -->
+      <div class="row">
+        <div class="col-12 form-group" *ngIf="activeStep >= steps.length - 1">
+          <button
+            type="submit"
+            [disabled]="!editForm.valid"
+            class="btn btn-success mr-2"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger mr-2"
+            (click)="onCancel()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </div>
-<ng-template #loading>
-  <div>
+
+<!--  Submit spinner -->
+<ng-template #spinner>
+  <div class="col-12 text-center p-5">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
 </ng-template>
-
-{{editForm.get('step'+0).valid}}
