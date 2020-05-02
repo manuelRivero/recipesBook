@@ -1,6 +1,10 @@
 <div class="card mb-3" style="max-width: 540px;">
   <div class="card-header">
-    <p>Header </p>
+    <app-profile-info [user]="userInfo" *ngIf="userInfo; else loading"></app-profile-info>
+    <ng-template #loading>
+      <p>Cargando</p>
+    </ng-template>
+
   </div>
   <div class="row no-gutters">
     <div class="col-md-4">

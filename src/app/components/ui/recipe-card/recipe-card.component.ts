@@ -9,12 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RecipeCardComponent implements OnInit {
   @Input() recipe;
+  userInfo:any;
 
 
 
   constructor(private _recipeService:RecipeService) { }
 
   ngOnInit() {
+    this._recipeService.getCreator(this.recipe.creator).subscribe( creator => {
+      console.log(creator)
+      this.userInfo = creator
+    })
+
   }
 
 }
