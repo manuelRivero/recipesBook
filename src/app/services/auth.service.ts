@@ -1,5 +1,4 @@
 import { Injectable, OnInit } from "@angular/core";
-import * as firebase from "firebase";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -22,21 +21,10 @@ export class AuthService implements OnInit {
     return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  getToken(): void {
-    if (firebase.auth().currentUser) {
-      firebase
-        .auth()
-        .currentUser.getIdToken()
-        .then((token: string) => {
-          this.userTokenSource.next(token);
-        });
-    }
-  }
-
   logOut(): void {
     this.firebaseAuth.auth.signOut();
   }
-  constructor(private router: Router, private firebaseAuth: AngularFireAuth) {
+  constructor(private firebaseAuth: AngularFireAuth) {
     this.firebaseAuth.authState.subscribe( user => {
       this.userTokenSource.next(user)
     })
