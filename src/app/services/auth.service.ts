@@ -1,58 +1,46 @@
 import { Injectable, OnInit } from "@angular/core";
 import * as firebase from "firebase";
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
+import { AngularFireAuth } from '@angular/fire/auth';
+
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
-export class AuthService  implements OnInit{
-  userTokenSource = new BehaviorSubject<string | null>(null)
-  userToken$ = this.userTokenSource.asObservable()
+export class AuthService implements OnInit {
+  userTokenSource = new BehaviorSubject<any | null>(null);
+  userToken$ = this.userTokenSource.asObservable();
+
+
   singUp(email: string, password: string) {
-    return firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(res => {
-         console.log(res)
-      });
+     return this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
+
   }
 
   logIn(email: string, password: string) {
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(res => {
-        return firebase
-          .auth()
-          .currentUser.getIdToken()
-          .then((token: string) => {
-            this.userTokenSource.next(token)
-          });
-      });
+    return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  getToken():void{
-    if(firebase.auth().currentUser){
+  getToken(): void {
+    if (firebase.auth().currentUser) {
       firebase
-      .auth()
-      .currentUser.getIdToken()
-      .then((token: string) => {
-        this.userTokenSource.next(token);
-      });
+        .auth()
+        .currentUser.getIdToken()
+        .then((token: string) => {
+          this.userTokenSource.next(token);
+        });
     }
-
   }
 
-  logOut():void{
-    firebase.auth().signOut().then(res => {
-      this.userTokenSource.next(null)
-      this.router.navigate(["login"])
-    } )
+  logOut(): void {
+    this.firebaseAuth.auth.signOut();
   }
-  constructor(private router:Router) { }
+  constructor(private router: Router, private firebaseAuth: AngularFireAuth) {
+    this.firebaseAuth.authState.subscribe( user => {
+      this.userTokenSource.next(user)
+    })
+  }
 
-  ngOnInit(){
-    this.getToken()
-  }
+  ngOnInit() {}
 }
