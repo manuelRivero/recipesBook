@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "recipes-b2a18": {
+      "hosting": {
+        "recipesProject": [
+          "recipes-b2a18"
+        ]
+      }
+    }
+  }
+}
