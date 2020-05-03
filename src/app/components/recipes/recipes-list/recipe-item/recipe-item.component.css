@@ -1,0 +1,16 @@
+.lg-truncate-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .lg-truncate-text{
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-wrap: break-word;
+  }
+}

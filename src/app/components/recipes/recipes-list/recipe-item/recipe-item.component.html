@@ -1,10 +1,21 @@
-<a [routerLink]="[recipe.id]" routerLinkActive="active" class="list-group-item list-group-item-action mb-1  d-flex justify-content-between" >
-    <div class="">
-        <h4 class="list-group-heading">{{recipe.name}}</h4>
-        <p class="list-group-text">{{recipe.description}}</p>
-
+<a
+  [routerLink]="[recipe._id]"
+  routerLinkActive="active"
+  class="list-group-item list-group-item-action mb-1"
+>
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <img
+        [src]="recipe.imgpath"
+        [alt]="recipe.name"
+        class="img-fluid rounded"
+      />
     </div>
-    <div class="">
-        <img [src]="recipe.imgpath" [alt]="recipe.name" class="img-fluid" style="max-height: 50px">
+    <div class="col-12 col-md-8 mt-3 mt-md-0 ">
+      <h5 class="list-group-heading text-truncate">{{ recipe.name }}</h5>
+      <p class="card-text lg-truncate-text">
+        <small class="text-muted">{{ recipe.description }}</small>
+      </p>
     </div>
+  </div>
 </a>
