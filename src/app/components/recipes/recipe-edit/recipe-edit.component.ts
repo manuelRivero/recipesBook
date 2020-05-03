@@ -74,10 +74,10 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
-    const { name, description, imgUrl} = this.editForm.get('step0').value;
+    const { name, description, imgUrl:imgpath} = this.editForm.get('step0').value;
     const ingredients = this.editForm.get('step1').value;
     const instructions = this.editForm.get('step2').value;
-    let newRecipe = new Recipe(name, description, instructions, imgUrl, ingredients, this.id);
+    let newRecipe = {name, description, instructions, imgpath, ingredients}
     this.activeStep = this.steps.length;
     this.loading = true;
     if (this.edit) {
@@ -86,7 +86,7 @@ export class RecipeEditComponent implements OnInit {
         this.onCancel();
       });
     } else {
-      this._recipeService.addRecipe(newRecipe).subscribe((res) => {
+      this._recipeService.addRecipe(newRecipe).then((res) => {
         this.loading = false;
         this.onCancel();
       });

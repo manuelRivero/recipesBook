@@ -1,3 +1,4 @@
+import { RecipeService } from './../../../services/recipe.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -6,12 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./profile-info.component.css']
 })
 export class ProfileInfoComponent implements OnInit {
-  @Input() user;
+  @Input() userId;
+  profile;
 
-  constructor() { }
+  constructor(private _recipeService:RecipeService) { }
 
   ngOnInit() {
-
+    this._recipeService.getRecipeCreator(this.userId).subscribe( res =>{
+      console.log(res)
+      this.profile = res;
+    })
   }
 
 }

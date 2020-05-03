@@ -1,9 +1,6 @@
-<div class="card mb-3" style="max-width: 540px;">
+<div class="card mb-3">
   <div class="card-header">
-    <app-profile-info [user]="userInfo" *ngIf="userInfo; else loading"></app-profile-info>
-    <ng-template #loading>
-      <p>Cargando</p>
-    </ng-template>
+    <app-profile-info [userId]="recipe.creator"></app-profile-info>
 
   </div>
   <div class="row no-gutters">
@@ -14,7 +11,14 @@
       <div class="card-body">
         <h5 class="card-title">{{recipe.name}}</h5>
         <p class="card-text">{{recipe.description}}</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <p class="card-text">Likes <span class="badge badge-success">47</span></p>
+        <div class="row card-text">
+        <p class="col-2"><span class="badge badge-primary">CHIKEND</span></p>
+        <p class="col-2"><span class="badge badge-primary">FRIED</span></p>
+        </div>
+
+        <p class="card-text"><small class="text-muted">posted 02/05/2020</small></p>
+
         <a role="buttom" class="btn btn-outline-info" [routerLink]="['/recipe.id']" > Ver detalles</a>
       </div>
     </div>
